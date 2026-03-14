@@ -5,34 +5,48 @@ module.exports = {
     './components/**/*.{js,jsx,ts,tsx}',
     './context/**/*.{js,jsx,ts,tsx}',
     './lib/**/*.{js,jsx,ts,tsx}',
+    './hooks/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {
       colors: {
-        navy: {
-          DEFAULT: '#0a0f2e',
-          light: '#0d1540',
-          lighter: '#0f1d5e',
+        // Primary brand palette
+        brand: {
+          navy:    '#1E3A5F',
+          steel:   '#3A6EA5',
+          saffron: '#F59E0B',
+          light:   '#EBF3FB',
         },
-        orange: {
-          50:  '#fff7ed',
-          100: '#ffedd5',
-          200: '#fed7aa',
-          300: '#fdba74',
-          400: '#fb923c',
-          500: '#f97316',
-          600: '#ea580c',
-          700: '#c2410c',
+        // Neutral palette
+        surface: {
+          DEFAULT: '#FFFFFF',
+          alt:     '#F5F7FA',
+          border:  '#E5E7EB',
         },
-        gold: '#fbbf24',
+        // Text
+        ink: {
+          DEFAULT: '#1F2937',
+          muted:   '#6B7280',
+          subtle:  '#9CA3AF',
+        },
       },
       fontFamily: {
-        sans:    ['Inter', 'system-ui', 'sans-serif'],
-        display: ['Syne', 'Inter', 'sans-serif'],
+        sans:     ['Open Sans', 'system-ui', 'sans-serif'],
+        heading:  ['Inter',    'system-ui', 'sans-serif'],
       },
-      animation: {
-        fadeInUp: 'fadeInUp 0.6s ease forwards',
-        float:    'float 3s ease-in-out infinite',
+      fontSize: {
+        '2xs': '0.625rem',
+      },
+      boxShadow: {
+        'card':    '0 1px 3px 0 rgba(0,0,0,0.08), 0 1px 2px -1px rgba(0,0,0,0.05)',
+        'card-lg': '0 4px 12px 0 rgba(0,0,0,0.10)',
+        'nav':     '0 1px 0 0 #E5E7EB',
+      },
+      borderRadius: {
+        DEFAULT: '4px',
+        'md':    '6px',
+        'lg':    '8px',
+        'xl':    '12px',
       },
     },
   },
