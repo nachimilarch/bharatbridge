@@ -1,107 +1,109 @@
 'use client';
-import Link from 'next/link';
-import { Search, ArrowRight, ShieldCheck, Globe, TrendingUp, Star } from 'lucide-react';
 import { useState } from 'react';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 
-const POPULAR = ['Basmati Rice', 'Cotton Fabric', 'Spices', 'Handicrafts', 'Leather Bags'];
+const TRENDING = ['Basmati Rice', 'Turmeric Powder', 'Cotton Fabric', 'Detergent Pods', 'Office Furniture'];
 
 export default function HeroSection() {
-  const [search, setSearch] = useState('');
+  const [query, setQuery] = useState('');
   const router = useRouter();
 
   const handleSearch = (e) => {
     e.preventDefault();
-    if (search.trim()) router.push(`/products?search=${encodeURIComponent(search.trim())}`);
+    if (query.trim()) router.push(`/products?search=${encodeURIComponent(query.trim())}`);
   };
 
   return (
-    <section className="relative overflow-hidden bg-gradient-hero">
-      {/* Blobs */}
+    <section
+      className="relative overflow-hidden"
+      style={{ background: 'linear-gradient(135deg, #0a0f2e 0%, #0d1a4e 50%, #1a0f60 100%)' }}
+    >
+      {/* Background orbs */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 right-0 w-[600px] h-[600px] bg-brand-100/40 rounded-full blur-[120px] -translate-y-1/3 translate-x-1/3" />
-        <div className="absolute bottom-0 left-0 w-[400px] h-[400px] bg-orange-100/50 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/4" />
+        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full bg-orange-500/10 blur-[120px]" />
+        <div className="absolute -bottom-40 -left-40 w-[500px] h-[500px] rounded-full bg-indigo-500/10 blur-[100px]" />
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full bg-blue-600/5 blur-[80px]" />
       </div>
 
-      <div className="page-container relative py-20 md:py-28 lg:py-32">
-        <div className="max-w-3xl mx-auto text-center">
+      <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-20 pb-24 text-center">
 
-          {/* Pill badge */}
-          <div className="inline-flex items-center gap-2 bg-white border border-brand-200 text-brand-700 text-xs font-semibold px-4 py-2 rounded-full mb-8 shadow-sm animate-fade-in">
-            <span className="w-1.5 h-1.5 bg-brand-500 rounded-full animate-pulse" />
-            🇮🇳 India's #1 B2B Export Marketplace
-          </div>
+        {/* Trust badge */}
+        <div className="inline-flex items-center gap-2 bg-white/10 border border-white/20 rounded-full px-5 py-2 text-sm text-white mb-8 backdrop-blur">
+          <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+          <span>🇮🇳 India’s #1 Verified B2B Export Marketplace</span>
+        </div>
 
-          {/* Headline */}
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-heading font-bold text-gray-900 mb-6 leading-[1.1] text-balance animate-slide-up">
-            Connect with
-            <span className="block text-gradient-brand">Verified Indian</span>
-            Exporters Worldwide
-          </h1>
+        {/* Headline */}
+        <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black text-white leading-tight mb-6">
+          Source
+          <span
+            style={{
+              background: 'linear-gradient(135deg, #f97316, #fbbf24)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundClip: 'text',
+            }}
+          > Premium<br />Indian Products </span>
+          Globally
+        </h1>
 
-          <p className="text-lg md:text-xl text-gray-500 mb-10 leading-relaxed max-w-2xl mx-auto">
-            Browse 10,000+ quality products — textiles, spices, handicrafts and more.
-            Submit inquiries directly to KYC-verified manufacturers.
-          </p>
+        {/* Sub */}
+        <p className="text-xl text-blue-200 max-w-2xl mx-auto mb-10 leading-relaxed">
+          Connect directly with <strong className="text-white">500+ KYC-verified Indian manufacturers</strong>.
+          Browse Rice, Spices, Furniture, Chemicals & more.
+          Submit bulk inquiries and get factory-direct prices.
+        </p>
 
-          {/* Search */}
-          <form onSubmit={handleSearch} className="flex gap-2 max-w-xl mx-auto mb-4">
-            <div className="relative flex-1">
-              <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400" size={18} />
-              <input
-                type="text"
-                placeholder="Search products, categories..."
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-                className="w-full pl-11 pr-4 py-3.5 bg-white border border-gray-200 rounded-2xl text-sm shadow-sm focus:outline-none focus:ring-2 focus:ring-brand-500/30 focus:border-brand-500 transition-all"
-              />
+        {/* Search bar */}
+        <form onSubmit={handleSearch} className="max-w-2xl mx-auto mb-6">
+          <div className="flex bg-white rounded-2xl shadow-2xl overflow-hidden p-1.5 gap-2">
+            <div className="flex items-center pl-3 text-gray-400">
+              <svg className="w-5 h-5" fill="none" stroke="currentColor" strokeWidth={2} viewBox="0 0 24 24">
+                <circle cx="11" cy="11" r="8" /><path d="m21 21-4.35-4.35" />
+              </svg>
             </div>
-            <button type="submit" className="btn btn-primary shine px-6 py-3.5 text-sm rounded-2xl">
+            <input
+              type="text"
+              value={query}
+              onChange={e => setQuery(e.target.value)}
+              placeholder='Search products… e.g. &quot;Basmati Rice&quot;, &quot;Cotton Fabric&quot;'
+              className="flex-1 py-3 px-2 text-gray-800 outline-none text-sm bg-transparent"
+            />
+            <select className="px-3 text-sm text-gray-600 border-l border-gray-200 bg-transparent outline-none hidden sm:block">
+              <option>All Categories</option>
+              <option>Rice & Grains</option>
+              <option>Spices</option>
+              <option>Furniture</option>
+              <option>Chemicals</option>
+            </select>
+            <button type="submit" className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-6 py-3 rounded-xl transition text-sm whitespace-nowrap">
               Search
             </button>
-          </form>
-
-          {/* Popular searches */}
-          <div className="flex flex-wrap items-center justify-center gap-2 mb-12">
-            <span className="text-xs text-gray-400 font-medium">Popular:</span>
-            {POPULAR.map((term) => (
-              <button
-                key={term}
-                onClick={() => router.push(`/products?search=${encodeURIComponent(term)}`)}
-                className="text-xs bg-white border border-gray-200 text-gray-600 hover:border-brand-400 hover:text-brand-600 px-3 py-1 rounded-full transition-all hover:shadow-sm"
-              >
-                {term}
-              </button>
-            ))}
           </div>
+        </form>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-14">
-            <Link href="/products" className="btn btn-primary btn-lg no-underline shine">
-              Browse Products <ArrowRight size={18} />
-            </Link>
-            <Link href="/vendors/register" className="btn btn-secondary btn-lg no-underline">
-              Register as Vendor
-            </Link>
-          </div>
-
-          {/* Trust stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-2xl mx-auto">
-            {[
-              { icon: <ShieldCheck className="text-emerald-500" size={22} />, value: '500+', label: 'KYC Verified Exporters', bg: 'bg-emerald-50 border-emerald-100' },
-              { icon: <Globe className="text-blue-500" size={22} />,         value: '50+',  label: 'Export Countries',       bg: 'bg-blue-50 border-blue-100' },
-              { icon: <TrendingUp className="text-brand-500" size={22} />,   value: '10K+', label: 'Products Listed',        bg: 'bg-brand-50 border-brand-100' },
-            ].map((item) => (
-              <div key={item.label} className={`flex items-center gap-3 ${item.bg} border rounded-2xl p-4 shadow-sm`}>
-                <div className="flex-shrink-0">{item.icon}</div>
-                <div className="text-left">
-                  <div className="font-heading font-bold text-gray-900 text-xl leading-none mb-0.5">{item.value}</div>
-                  <div className="text-gray-500 text-xs">{item.label}</div>
-                </div>
-              </div>
-            ))}
-          </div>
+        {/* Trending */}
+        <div className="flex flex-wrap items-center justify-center gap-2 mb-10">
+          <span className="text-blue-300 text-sm">Trending:</span>
+          {TRENDING.map(t => (
+            <button key={t} onClick={() => { setQuery(t); router.push(`/products?search=${encodeURIComponent(t)}`); }}
+              className="text-sm text-white bg-white/10 hover:bg-orange-500/80 border border-white/20 px-4 py-1.5 rounded-full transition">
+              {t}
+            </button>
+          ))}
         </div>
+
+        {/* CTA buttons */}
+        <div className="flex flex-wrap items-center justify-center gap-4">
+          <Link href="/products" className="bg-orange-500 hover:bg-orange-600 text-white font-bold px-8 py-4 rounded-full text-base transition shadow-lg shadow-orange-500/30 hover:scale-105">
+            Browse All Products →
+          </Link>
+          <Link href="/inquiry" className="border-2 border-white/40 hover:border-white text-white font-bold px-8 py-4 rounded-full text-base transition hover:bg-white/10">
+            Submit Buying Inquiry
+          </Link>
+        </div>
+
       </div>
     </section>
   );
