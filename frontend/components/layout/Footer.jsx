@@ -1,129 +1,79 @@
 import Link from 'next/link';
-import { Mail, Phone, MapPin, ArrowRight } from 'lucide-react';
 
-const FOOTER_LINKS = {
+const LINKS = {
   'Products': [
-    ['All Products',         '/products'],
-    ['Featured Listings',    '/products?featured=true'],
-    ['New Arrivals',         '/products?sort=newest'],
-    ['Submit Inquiry',       '/inquiry'],
-    ['Request a Product',    '/inquiry'],
-  ],
-  'Export Categories': [
-    ['Indian Spices',        '/categories/indian-spices'],
-    ['Textiles & Fabrics',   '/categories/textiles-fabrics'],
-    ['Pharmaceuticals',      '/categories/pharmaceuticals'],
-    ['Handicrafts',          '/categories/handicrafts'],
-    ['Ayurvedic Products',   '/categories/ayurvedic-products'],
-    ['Agriculture',          '/categories/agriculture-products'],
+    ['All Products',       '/products'],
+    ['Rice & Grains',      '/products?cat=rice'],
+    ['Spices',             '/products?cat=spices'],
+    ['Furniture',          '/products?cat=furniture'],
+    ['Chemicals',          '/products?cat=chemicals'],
+    ['Millets & Noodles',  '/products?cat=millets'],
   ],
   'Company': [
-    ['About BharatBridge',   '/about'],
-    ['How It Works',         '/about#how-it-works'],
-    ['Become a Vendor',      '/vendors/register'],
-    ['Vendor Dashboard',     '/dashboard'],
-    ['Contact Us',           '/contact'],
-    ['Careers',              '/careers'],
+    ['About BharatBridge', '/about'],
+    ['How It Works',       '/about#how-it-works'],
+    ['Become a Vendor',    '/vendor/register'],
+    ['Submit Inquiry',     '/inquiry'],
+    ['Contact Us',         '/contact'],
   ],
-  'Export Guides': [
-    ['Import from India',    '/blog/how-to-import-goods-from-india'],
-    ['Top Indian Exports',   '/blog/top-indian-products-exported-worldwide'],
-    ['Spice Sourcing Guide', '/blog/best-indian-spice-exporters'],
-    ['Export Trends 2025',   '/blog/india-export-market-trends-2025'],
-    ['Trade Documentation',  '/blog/india-export-documentation'],
+  'Resources': [
+    ['Export Guides',      '/export-guides'],
+    ['Import from India',  '/blog/import-from-india'],
+    ['Vendor Login',       '/login'],
+    ['Admin Login',        '/admin/login'],
+    ['Privacy Policy',     '/privacy'],
   ],
 };
 
-const CERTIFICATIONS = ['🏆 ISO Certified Vendors', '✅ IEC Code Verified', '🔒 SSL Secured', '🇮🇳 Made in India Platform'];
-
 export default function Footer() {
-  const year = new Date().getFullYear();
-
   return (
-    <footer className="bg-slate-950 text-slate-400">
-
-      {/* ── Top CTA band ── */}
-      <div className="bg-blue-gradient">
-        <div className="bb-container py-14">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
-            <div>
-              <h2 className="text-2xl md:text-3xl font-heading font-black text-white mb-2">
-                Ready to Source from India?
-              </h2>
-              <p className="text-blue-100 text-sm">
-                Submit a free buying inquiry and connect with verified Indian exporters today.
-              </p>
-            </div>
-            <div className="flex flex-col sm:flex-row gap-3 sm:justify-end">
-              <Link href="/inquiry"
-                className="bb-btn bb-btn-saffron btn-shine">
-                Submit Buying Inquiry <ArrowRight size={16} />
-              </Link>
-              <Link href="/vendors/register"
-                className="bb-btn bb-btn-white">
-                Register as Vendor
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      {/* ── Main footer ── */}
-      <div className="bb-container py-14">
-        <div className="grid grid-cols-1 lg:grid-cols-6 gap-10 mb-12">
+    <footer className="bg-navy text-white">
+      {/* Main footer */}
+      <div className="max-w-7xl mx-auto px-6 py-16">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
 
           {/* Brand col */}
           <div className="lg:col-span-2">
-            <Link href="/" className="flex items-center gap-3 mb-5 group">
-              <div className="w-10 h-10 bg-blue-gradient rounded-xl flex items-center justify-center">
-                <span className="text-white font-black text-xl font-heading">B</span>
+            <Link href="/" className="flex items-center gap-3 mb-5">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-orange-500 to-orange-600 flex items-center justify-center shadow-lg">
+                <span className="text-white font-black text-xl">B</span>
               </div>
               <div>
-                <div className="font-heading font-black text-xl text-white">
-                  Bharat<span className="text-saffron-400">Bridge</span>
+                <div className="font-black text-2xl">
+                  <span className="text-white">Bharat</span>
+                  <span className="text-orange-400">Bridge</span>
                 </div>
-                <div className="text-[9px] text-slate-500 font-semibold tracking-widest uppercase">B2B Export Platform</div>
+                <div className="text-[10px] text-gray-400 uppercase tracking-widest">B2B Export Platform</div>
               </div>
             </Link>
-
-            <p className="text-sm leading-relaxed mb-6 text-slate-500">
-              India's premier B2B export marketplace. Connecting 500+ verified Indian
-              exporters with global buyers across 50+ countries.
+            <p className="text-gray-400 text-sm leading-relaxed mb-6 max-w-xs">
+              Connecting global buyers with 500+ KYC-verified Indian manufacturers.
+              Source premium Made-in-India products across Rice, Spices, Furniture, Chemicals & more.
             </p>
-
-            {/* Contact */}
-            <div className="space-y-2.5">
-              {[
-                { icon: <Mail size={14} />,    text: 'hello@bharatbridge.com' },
-                { icon: <Phone size={14} />,   text: '+91 98765 43210' },
-                { icon: <MapPin size={14} />,  text: 'Mumbai, India 400001' },
-              ].map((c) => (
-                <div key={c.text} className="flex items-center gap-2.5 text-sm text-slate-500 hover:text-slate-300 transition-colors">
-                  <span className="text-blue-500">{c.icon}</span>
-                  {c.text}
-                </div>
-              ))}
-            </div>
-
-            {/* Certifications */}
-            <div className="flex flex-wrap gap-2 mt-6">
-              {CERTIFICATIONS.map((c) => (
-                <span key={c} className="text-[10px] bg-slate-800 text-slate-400 px-2.5 py-1 rounded-lg border border-slate-700">
-                  {c}
-                </span>
-              ))}
+            <div className="space-y-2 text-sm text-gray-400">
+              <div className="flex items-center gap-2">
+                <span className="text-orange-400">📍</span>
+                <span>Secunderabad, Telangana, India — 500003</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-orange-400">📞</span>
+                <a href="tel:+919876543210" className="hover:text-orange-400 transition">+91 98765 43210</a>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className="text-orange-400">✉️</span>
+                <a href="mailto:hello@bharatbridge.com" className="hover:text-orange-400 transition">hello@bharatbridge.com</a>
+              </div>
             </div>
           </div>
 
-          {/* Link columns */}
-          {Object.entries(FOOTER_LINKS).map(([title, links]) => (
+          {/* Link cols */}
+          {Object.entries(LINKS).map(([title, links]) => (
             <div key={title}>
-              <h4 className="font-heading font-bold text-white text-sm mb-5 tracking-wide">{title}</h4>
-              <ul className="space-y-2.5">
+              <h4 className="text-white font-bold text-sm uppercase tracking-widest mb-4">{title}</h4>
+              <ul className="space-y-2">
                 {links.map(([label, href]) => (
                   <li key={href}>
-                    <Link href={href}
-                      className="text-sm text-slate-500 hover:text-white transition-colors">
+                    <Link href={href} className="text-gray-400 text-sm hover:text-orange-400 transition-colors">
                       {label}
                     </Link>
                   </li>
@@ -132,18 +82,22 @@ export default function Footer() {
             </div>
           ))}
         </div>
+      </div>
 
-        {/* Bottom */}
-        <div className="border-t border-slate-800 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs text-slate-600">
-          <p>© {year} BharatBridge Technologies Pvt. Ltd. All rights reserved.</p>
-          <div className="flex items-center gap-4">
-            <Link href="/privacy" className="hover:text-slate-400 transition-colors">Privacy Policy</Link>
-            <Link href="/terms"   className="hover:text-slate-400 transition-colors">Terms of Use</Link>
-            <Link href="/sitemap.xml" className="hover:text-slate-400 transition-colors">Sitemap</Link>
+      {/* Bottom bar */}
+      <div className="border-t border-white/10">
+        <div className="max-w-7xl mx-auto px-6 py-5 flex flex-col md:flex-row justify-between items-center gap-3 text-xs text-gray-500">
+          <span>© {new Date().getFullYear()} BharatBridge Technologies Pvt. Ltd. All rights reserved.</span>
+          <div className="flex items-center gap-1">
+            <span className="text-gray-500">Made with</span>
+            <span className="text-red-400">❤️</span>
+            <span className="text-gray-500">in India 🇮🇳</span>
           </div>
-          <p className="flex items-center gap-1.5">
-            Made with <span className="text-red-500">❤️</span> in India 🇮🇳
-          </p>
+          <div className="flex gap-4">
+            <Link href="/privacy" className="hover:text-orange-400 transition">Privacy</Link>
+            <Link href="/terms" className="hover:text-orange-400 transition">Terms</Link>
+            <Link href="/sitemap.xml" className="hover:text-orange-400 transition">Sitemap</Link>
+          </div>
         </div>
       </div>
     </footer>
