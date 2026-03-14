@@ -1,85 +1,50 @@
-import { ShieldCheck, Globe, Zap, HeadphonesIcon, Award, TrendingUp } from 'lucide-react';
-
 const REASONS = [
-  {
-    icon: <ShieldCheck size={28} className="text-emerald-600" />,
-    title: 'KYC Verified Exporters',
-    desc: 'Every vendor on BharatBridge undergoes strict KYC verification including IEC code, GST, and business registration checks.',
-    color: 'bg-emerald-50 border-emerald-100',
-    tag: 'Trust',
-    tagColor: 'bb-badge-verified',
-  },
-  {
-    icon: <Award size={28} className="text-blue-600" />,
-    title: 'Export Quality Products',
-    desc: 'Products listed meet international quality standards including ISO, FSSAI, BIS certifications for global markets.',
-    color: 'bg-blue-50 border-blue-100',
-    tag: 'Quality',
-    tagColor: 'bb-badge-new',
-  },
-  {
-    icon: <Globe size={28} className="text-indigo-600" />,
-    title: 'Global Sourcing Network',
-    desc: 'Connect with exporters from 28 Indian states covering all major export hubs — Surat, Ludhiana, Moradabad, Chennai.',
-    color: 'bg-indigo-50 border-indigo-100',
-    tag: 'Network',
-    tagColor: 'bb-badge-export',
-  },
-  {
-    icon: <Zap size={28} className="text-saffron-600" />,
-    title: 'Fast Response Time',
-    desc: 'Our dedicated trade facilitation team ensures all buyer inquiries are responded to within 24 business hours.',
-    color: 'bg-saffron-50 border-saffron-100',
-    tag: 'Speed',
-    tagColor: 'bb-badge-featured',
-  },
-  {
-    icon: <HeadphonesIcon size={28} className="text-purple-600" />,
-    title: 'Dedicated Support',
-    desc: 'Multilingual support team assists with trade documentation, shipping, and customs requirements end-to-end.',
-    color: 'bg-purple-50 border-purple-100',
-    tag: 'Support',
-    tagColor: 'bb-badge-new',
-  },
-  {
-    icon: <TrendingUp size={28} className="text-rose-600" />,
-    title: 'Live Export Pricing',
-    desc: 'Real-time currency conversion with live exchange rates for USD, EUR, GBP, AED, SGD and 15+ currencies.',
-    color: 'bg-rose-50 border-rose-100',
-    tag: 'Pricing',
-    tagColor: 'bb-badge-hot',
-  },
+  { icon: '✅', title: 'KYC Verified Manufacturers',
+    desc: 'Every vendor undergoes strict KYC verification including IEC code, GST and business registration.' },
+  { icon: '🏆', title: 'Export Quality Products',
+    desc: 'Products meet international standards including ISO, FSSAI and BIS certifications for global markets.' },
+  { icon: '🌍', title: 'Global Sourcing Network',
+    desc: 'Connect with manufacturers from 28 Indian states covering all major export hubs across India.' },
+  { icon: '⚡', title: '24-Hour Response Time',
+    desc: 'Our trade facilitation team responds to all buyer inquiries within 24 business hours.' },
+  { icon: '🛥️', title: 'Shipping & Customs Handled',
+    desc: 'We manage international shipping, freight forwarding and complete customs clearance for you.' },
+  { icon: '💰', title: 'Best Factory-Direct Prices',
+    desc: 'No middlemen. Connect directly with manufacturers and negotiate the best bulk order pricing.' },
 ];
 
 export default function WhyChooseUs() {
   return (
-    <section className="bb-section bg-white">
-      <div className="bb-container">
-        <div className="text-center mb-14">
-          <div className="bb-section-pill">✅ Why BharatBridge</div>
-          <h2 className="bb-section-title">Built for Global B2B Trade</h2>
-          <p className="bb-section-sub max-w-2xl mx-auto">
-            Everything you need to confidently source from India — verified suppliers,
-            quality assurance, and dedicated trade support.
+    <section className="py-24 bg-gray-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <span className="text-orange-500 font-semibold uppercase tracking-[0.2em] text-xs">Why BharatBridge</span>
+          <h2 className="text-4xl font-black text-gray-900 mt-2">The Smartest Way to Source from India</h2>
+          <p className="text-gray-500 text-lg mt-3 max-w-2xl mx-auto">
+            Join 10,000+ global buyers who trust BharatBridge for reliable, verified Indian manufacturing sourcing.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {REASONS.map((r) => (
-            <div key={r.title}
-              className={`group p-6 rounded-2xl border-2 ${r.color} hover:shadow-md transition-all duration-300 hover:-translate-y-0.5`}>
-              <div className="flex items-start justify-between mb-4">
-                <div className={`w-14 h-14 rounded-2xl bg-white shadow-sm flex items-center justify-center border ${r.color}`}>
-                  {r.icon}
-                </div>
-                <span className={`bb-badge ${r.tagColor}`}>{r.tag}</span>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {REASONS.map((r, i) => (
+            <div key={i} className="bg-white rounded-2xl p-7 border border-gray-100 hover:shadow-xl hover:-translate-y-1 hover:border-orange-100 transition-all duration-300 group">
+              <div className="w-14 h-14 rounded-2xl bg-orange-50 border border-orange-100 flex items-center justify-center text-2xl mb-5 group-hover:bg-orange-500 group-hover:scale-110 transition-all duration-300">
+                {r.icon}
               </div>
-              <h3 className="font-heading font-bold text-slate-900 text-base mb-2 group-hover:text-blue-700 transition-colors">
-                {r.title}
-              </h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{r.desc}</p>
+              <h3 className="text-lg font-bold text-gray-900 mb-2">{r.title}</h3>
+              <p className="text-gray-500 text-sm leading-relaxed">{r.desc}</p>
             </div>
           ))}
+        </div>
+
+        {/* Trust logos strip */}
+        <div className="mt-16 text-center">
+          <p className="text-gray-400 text-sm uppercase tracking-widest mb-6">Trusted by buyers from</p>
+          <div className="flex flex-wrap justify-center gap-8 items-center">
+            {['🇺🇸 USA', '🇬🇧 UK', '🇦🇪 UAE', '🇩🇪 Germany', '🇦🇺 Australia', '🇨🇦 Canada', '🇯🇵 Japan'].map(c => (
+              <span key={c} className="text-gray-500 font-medium text-sm bg-white border border-gray-200 rounded-full px-5 py-2 shadow-sm">{c}</span>
+            ))}
+          </div>
         </div>
       </div>
     </section>
