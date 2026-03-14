@@ -1,0 +1,217 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+// ─── Enums ────────────────────────────────────────────────
+
+enum Role {
+  admin
+  vendor
+  buyer
+}
+
+enum KycStatus {
+  pending
+  approved
+  rejected
+}
+
+enum InquiryStatus {
+  new
+  assigned
+  in_progress
+  responded
+  closed
+}
+
+// ─── Models ───────────────────────────────────────────────
+
+model User {
+  id           Int       @id @default(autoincrement()) @db.UnsignedInt
+  name         String    @db.VarChar(150)
+  email        String    @unique @db.VarChar(191)
+  passwordHash String    @map("password_hash") @db.VarChar(255)
+  role         Role      @default(buyer)
+  isActive     Boolean   @default(true) @map("is_active")
+  createdAt    DateTime  @default(now()) @map("created_at")
+  updatedAt    DateTime  @updatedAt @map("updated_at")
+  deletedAt    DateTime? @map("deleted_at")
+
+  vendor Vendor?
+
+  @@index([email])
+  @@index([role])
+  @@map("users")
+}
+
+model Vendor {
+  id          Int       @id @default(autoincrement()) @db.UnsignedInt
+  userId      Int       @unique @map("user_id") @db.UnsignedInt
+  companyName String    @map("company_name") @db.VarChar(255)
+  gstNumber   String?   @map("gst_number") @db.VarChar(20)
+  iecCode     String?   @map("iec_code") @db.VarChar(20)
+  address     String?   @db.Text
+  city        String?   @db.VarChar(100)
+  state       String?   @db.VarChar(100)
+  pincode     String?   @db.VarChar(10)
+  website     String?   @db.VarChar(255)
+  description String?   @db.Text
+  logoUrl     String?   @map("logo_url") @db.VarChar(500)
+  kycDocUrl   String?   @map("kyc_doc_url") @db.VarChar(500)
+  kycStatus   KycStatus @default(pending) @map("kyc_status")
+  kycNotes    String?   @map("kyc_notes") @db.Text
+  isApproved  Boolean   @default(false) @map("is_approved")
+  approvedAt  DateTime? @map("approved_at")
+  approvedBy  Int?      @map("approved_by") @db.UnsignedInt
+  createdAt   DateTime  @default(now()) @map("created_at")
+  updatedAt   DateTime  @updatedAt @map("updated_at")
+
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  products  Product[]
+  inquiries Inquiry[]
+
+  @@index([kycStatus])
+  @@index([isApproved])
+  @@map("vendors")
+}
+
+model Category {
+  id          Int        @id @default(autoincrement()) @db.UnsignedInt
+  name        String     @unique @db.VarChar(150)
+  slug        String     @unique @db.VarChar(150)
+  description String?    @db.Text
+  iconUrl     String?    @map("icon_url") @db.VarChar(500)
+  parentId    Int?       @map("parent_id") @db.UnsignedInt
+  sortOrder   Int        @default(0) @map("sort_order")
+  isActive    Boolean    @default(true) @map("is_active")
+  createdAt   DateTime   @default(now()) @map("created_at")
+  updatedAt   DateTime   @updatedAt @map("updated_at")
+
+  parent   Category?  @relation("SubCategories", fields: [parentId], references: [id], onDelete: SetNull)
+  children Category[] @relation("SubCategories")
+  products Product[]
+
+  @@index([slug])
+  @@index([parentId])
+  @@map("categories")
+}
+
+model Country {
+  id         Int      @id @default(autoincrement()) @db.UnsignedInt
+  name       String   @db.VarChar(100)
+  isoCode    String   @unique @map("iso_code") @db.VarChar(3)
+  currency   String?  @db.VarChar(10)
+  flagEmoji  String?  @map("flag_emoji") @db.VarChar(10)
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  productCountries ProductCountry[]
+
+  @@index([isoCode])
+  @@map("countries")
+}
+
+model Product {
+  id             Int       @id @default(autoincrement()) @db.UnsignedInt
+  vendorId       Int       @map("vendor_id") @db.UnsignedInt
+  categoryId     Int       @map("category_id") @db.UnsignedInt
+  name           String    @db.VarChar(255)
+  slug           String    @unique @db.VarChar(255)
+  description    String?   @db.Text
+  specifications Json?
+  basePriceInr   Decimal   @map("base_price_inr") @db.Decimal(15, 2)
+  minOrderQty    Int       @default(1) @map("min_order_qty")
+  unit           String    @default("piece") @db.VarChar(50)
+  hsCode         String?   @map("hs_code") @db.VarChar(20)
+  isPublished    Boolean   @default(false) @map("is_published")
+  isFeatured     Boolean   @default(false) @map("is_featured")
+  viewCount      Int       @default(0) @map("view_count") @db.UnsignedInt
+  createdAt      DateTime  @default(now()) @map("created_at")
+  updatedAt      DateTime  @updatedAt @map("updated_at")
+  deletedAt      DateTime? @map("deleted_at")
+
+  vendor           Vendor           @relation(fields: [vendorId], references: [id], onDelete: Cascade)
+  category         Category         @relation(fields: [categoryId], references: [id])
+  images           ProductImage[]
+  productCountries ProductCountry[]
+  inquiries        Inquiry[]
+
+  @@index([vendorId])
+  @@index([categoryId])
+  @@index([slug])
+  @@index([isPublished])
+  @@index([deletedAt])
+  @@map("products")
+}
+
+model ProductImage {
+  id        Int      @id @default(autoincrement()) @db.UnsignedInt
+  productId Int      @map("product_id") @db.UnsignedInt
+  url       String   @db.VarChar(500)
+  altText   String?  @map("alt_text") @db.VarChar(255)
+  isPrimary Boolean  @default(false) @map("is_primary")
+  sortOrder Int      @default(0) @map("sort_order")
+  createdAt DateTime @default(now()) @map("created_at")
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@index([productId])
+  @@map("product_images")
+}
+
+model ProductCountry {
+  productId Int @map("product_id") @db.UnsignedInt
+  countryId Int @map("country_id") @db.UnsignedInt
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  country Country @relation(fields: [countryId], references: [id], onDelete: Cascade)
+
+  @@id([productId, countryId])
+  @@map("product_countries")
+}
+
+model CurrencyRate {
+  id           Int      @id @default(autoincrement()) @db.UnsignedInt
+  currencyCode String   @map("currency_code") @db.VarChar(10)
+  currencyName String?  @map("currency_name") @db.VarChar(100)
+  rateVsInr    Decimal  @map("rate_vs_inr") @db.Decimal(20, 8)
+  fetchedAt    DateTime @default(now()) @map("fetched_at")
+
+  @@index([currencyCode])
+  @@index([fetchedAt])
+  @@map("currency_rates")
+}
+
+model Inquiry {
+  id             Int           @id @default(autoincrement()) @db.UnsignedInt
+  productId      Int           @map("product_id") @db.UnsignedInt
+  vendorId       Int           @map("vendor_id") @db.UnsignedInt
+  buyerName      String        @map("buyer_name") @db.VarChar(150)
+  buyerCompany   String?       @map("buyer_company") @db.VarChar(255)
+  buyerEmail     String        @map("buyer_email") @db.VarChar(191)
+  buyerPhone     String?       @map("buyer_phone") @db.VarChar(30)
+  buyerCountry   String?       @map("buyer_country") @db.VarChar(100)
+  quantity       Int?
+  message        String?       @db.Text
+  status         InquiryStatus @default(new)
+  assignedTo     Int?          @map("assigned_to") @db.UnsignedInt
+  adminNotes     String?       @map("admin_notes") @db.Text
+  vendorResponse String?       @map("vendor_response") @db.Text
+  respondedAt    DateTime?     @map("responded_at")
+  createdAt      DateTime      @default(now()) @map("created_at")
+  updatedAt      DateTime      @updatedAt @map("updated_at")
+
+  product Product @relation(fields: [productId], references: [id])
+  vendor  Vendor  @relation(fields: [vendorId], references: [id])
+
+  @@index([status])
+  @@index([vendorId])
+  @@index([productId])
+  @@index([buyerEmail])
+  @@map("inquiries")
+}
