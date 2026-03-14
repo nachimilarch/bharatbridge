@@ -1,69 +1,46 @@
-import { Search, Send, Handshake } from 'lucide-react';
-import Link from 'next/link';
-
 const STEPS = [
-  {
-    step: '01',
-    icon: <Search size={28} className="text-blue-600" />,
-    title: 'Browse Export Products',
-    desc: 'Search 10,000+ export-quality Indian products across 20+ categories. Filter by country, price, and minimum order.',
-    color: 'bg-blue-50 border-blue-100',
-    badge: 'bg-blue-700',
-  },
-  {
-    step: '02',
-    icon: <Send size={28} className="text-saffron-600" />,
-    title: 'Submit Your Inquiry',
-    desc: 'Fill out a simple inquiry form with your requirements — product, quantity, destination country, and budget.',
-    color: 'bg-saffron-50 border-saffron-100',
-    badge: 'bg-saffron-500',
-  },
-  {
-    step: '03',
-    icon: <Handshake size={28} className="text-emerald-600" />,
-    title: 'Connect with Exporter',
-    desc: 'Our team verifies your inquiry and connects you with the most suitable KYC-verified Indian exporter within 24 hours.',
-    color: 'bg-emerald-50 border-emerald-100',
-    badge: 'bg-emerald-600',
-  },
+  { step: '01', icon: '🔍', title: 'Browse Product Categories',
+    desc: 'Explore curated high-quality Made-in-India products — Rice, Spices, Furniture, Chemicals, Millets & more.' },
+  { step: '02', icon: '📝', title: 'Submit a Bulk Inquiry',
+    desc: 'Tell us your sourcing requirement. Submit one inquiry form and get competitive quotes from verified manufacturers.' },
+  { step: '03', icon: '💬', title: 'Receive Quotes & Negotiate',
+    desc: 'Get multiple supplier quotes instantly. Negotiate directly for the best factory-direct prices — no middlemen.' },
+  { step: '04', icon: '🔒', title: 'Secure Payments & Shipping',
+    desc: 'We handle secure payments, international shipping, and customs clearance so you can focus on your business.' },
+  { step: '05', icon: '📦', title: 'Receive Your Products',
+    desc: 'Get your premium Indian products delivered anywhere in the world — quickly and completely hassle-free.' },
 ];
 
 export default function HowItWorks() {
   return (
-    <section className="bb-section bg-slate-50">
-      <div className="bb-container">
-        <div className="text-center mb-14">
-          <div className="bb-section-pill">⚡ Simple Process</div>
-          <h2 className="bb-section-title">How BharatBridge Works</h2>
-          <p className="bb-section-sub max-w-xl mx-auto">
-            Sourcing Indian export products has never been easier. Three simple steps to connect with verified exporters.
+    <section className="py-24" style={{ background: 'linear-gradient(135deg, #0a0f2e, #0d1a4e)' }}>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <span className="text-orange-400 font-semibold uppercase tracking-[0.2em] text-xs">Simple Process</span>
+          <h2 className="text-4xl font-black text-white mt-2">How BharatBridge Works</h2>
+          <p className="text-blue-200 mt-3 max-w-xl mx-auto">
+            From discovery to doorstep — we manage your entire global sourcing journey.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 relative">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-6 relative">
           {/* Connector line */}
-          <div className="hidden md:block absolute top-14 left-1/3 right-1/3 h-0.5 bg-gradient-to-r from-blue-200 via-saffron-200 to-emerald-200 -translate-y-1/2 z-0" />
+          <div className="hidden lg:block absolute top-12 left-[10%] right-[10%] h-0.5 bg-orange-500/20 z-0" />
 
           {STEPS.map((s, i) => (
-            <div key={s.step} className={`bb-card border-2 ${s.color} p-8 text-center relative z-10`}>
-              <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl ${s.badge} shadow-lg mb-5`}>
-                <span className="text-white font-heading font-black text-xl">{i + 1}</span>
+            <div key={i} className="relative z-10 flex flex-col items-center text-center group">
+              {/* Icon circle */}
+              <div className="w-24 h-24 rounded-2xl bg-white/5 border border-white/10 flex flex-col items-center justify-center mb-4 group-hover:bg-orange-500/20 group-hover:border-orange-500/50 transition-all duration-300 shadow-lg">
+                <span className="text-3xl mb-1">{s.icon}</span>
+                <span className="text-orange-400 text-xs font-black">STEP {s.step}</span>
               </div>
-              <div className="flex justify-center mb-4">
-                <div className={`w-12 h-12 rounded-xl ${s.color} border-2 flex items-center justify-center`}>
-                  {s.icon}
-                </div>
+              {/* Card */}
+              <div className="bg-white/5 border border-white/10 rounded-2xl p-4 hover:bg-white/10 hover:border-orange-500/30 transition-all duration-300">
+                <h3 className="text-white font-bold text-sm mb-2">{s.title}</h3>
+                <p className="text-blue-300 text-xs leading-relaxed">{s.desc}</p>
               </div>
-              <h3 className="font-heading font-bold text-slate-900 text-lg mb-3">{s.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{s.desc}</p>
             </div>
           ))}
-        </div>
-
-        <div className="text-center mt-10">
-          <Link href="/inquiry" className="bb-btn bb-btn-primary bb-btn-lg btn-shine">
-            Submit Your First Inquiry →
-          </Link>
         </div>
       </div>
     </section>
