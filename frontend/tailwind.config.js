@@ -1,54 +1,40 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
-    './app/**/*.{js,ts,jsx,tsx,mdx}',
-    './components/**/*.{js,ts,jsx,tsx,mdx}',
-    './context/**/*.{js,ts,jsx,tsx}',
-    './lib/**/*.{js,ts,jsx,tsx}',
+    './app/**/*.{js,jsx,ts,tsx}',
+    './components/**/*.{js,jsx,ts,tsx}',
+    './context/**/*.{js,jsx,ts,tsx}',
+    './lib/**/*.{js,jsx,ts,tsx}',
   ],
   theme: {
     extend: {
       colors: {
-        blue: {
-          950: '#0c1e3e',
-          900: '#1e3a5f',
-          800: '#1e40af',
-          700: '#1d4ed8',
-          600: '#2563eb',
-          500: '#3b82f6',
-          400: '#60a5fa',
-          300: '#93c5fd',
-          200: '#bfdbfe',
-          100: '#dbeafe',
-          50:  '#eff6ff',
+        navy: {
+          DEFAULT: '#0a0f2e',
+          light: '#0d1540',
+          lighter: '#0f1d5e',
         },
-        saffron: {
-          600: '#d97706',
-          500: '#f59e0b',
-          400: '#fbbf24',
-          100: '#fef3c7',
-          50:  '#fffbeb',
+        orange: {
+          50:  '#fff7ed',
+          100: '#ffedd5',
+          200: '#fed7aa',
+          300: '#fdba74',
+          400: '#fb923c',
+          500: '#f97316',
+          600: '#ea580c',
+          700: '#c2410c',
         },
+        gold: '#fbbf24',
       },
       fontFamily: {
-        sans:    ['Open Sans', 'system-ui', 'sans-serif'],
-        heading: ['Inter',     'system-ui', 'sans-serif'],
+        sans:    ['Inter', 'system-ui', 'sans-serif'],
+        display: ['Syne', 'Inter', 'sans-serif'],
       },
-      boxShadow: {
-        'card':  '0 1px 4px rgba(0,0,0,0.06)',
-        'card-hover': '0 8px 30px rgba(0,0,0,0.10)',
-        'nav':   '0 2px 20px rgba(0,0,0,0.08)',
-        'cta':   '0 8px 40px rgba(30,64,175,0.25)',
-      },
-      container: {
-        center:  true,
-        padding: { DEFAULT: '1rem', sm: '1.5rem', lg: '2rem' },
+      animation: {
+        fadeInUp: 'fadeInUp 0.6s ease forwards',
+        float:    'float 3s ease-in-out infinite',
       },
     },
   },
-  plugins: [
-    require('@tailwindcss/forms'),
-    require('@tailwindcss/typography'),
-    require('@tailwindcss/aspect-ratio'),
-  ],
+  plugins: [],
 };
