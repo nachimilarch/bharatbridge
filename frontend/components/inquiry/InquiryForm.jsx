@@ -3,19 +3,20 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Send, CheckCircle } from 'lucide-react';
-import toast from 'react-hot-toast';
 import api from '@/lib/api';
 
 const schema = z.object({
-  buyerName: z.string().min(2, 'Name is required'),
+  buyerName:    z.string().min(2, 'Name is required'),
   buyerCompany: z.string().optional(),
-  buyerEmail: z.string().email('Valid email required'),
-  buyerPhone: z.string().optional(),
+  buyerEmail:   z.string().email('Valid email required'),
+  buyerPhone:   z.string().optional(),
   buyerCountry: z.string().min(1, 'Country is required'),
-  quantity: z.string().optional(),
-  message: z.string().optional(),
+  quantity:     z.string().optional(),
+  message:      z.string().optional(),
 });
+
+const inputCls = 'w-full px-4 py-2.5 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30 focus:border-[#1E3A5F] transition placeholder-slate-400';
+const errorCls = 'text-red-500 text-xs mt-1';
 
 export default function InquiryForm({ productId, productName }) {
   const [submitted, setSubmitted] = useState(false);
@@ -32,92 +33,108 @@ export default function InquiryForm({ productId, productName }) {
         quantity: data.quantity ? parseInt(data.quantity) : undefined,
       });
       setSubmitted(true);
-    } catch (err) {
-      toast.error(err.response?.data?.message || 'Failed to submit inquiry. Please try again.');
+    } catch {
+      alert('Failed to submit. Please try again.');
     }
   };
 
   if (submitted) {
     return (
-      <div className="bg-white border border-green-200 rounded-xl p-6 text-center">
-        <CheckCircle className="text-green-500 mx-auto mb-3" size={40} />
-        <h3 className="font-semibold text-gray-900 mb-2">Inquiry Sent!</h3>
-        <p className="text-gray-600 text-sm">
-          Thank you! We've received your inquiry for <strong>{productName}</strong>.
-          Our team will connect you with the vendor within 24–48 hours.
+      <div className="text-center py-12 px-6">
+        <div className="w-16 h-16 rounded-full bg-green-100 flex items-center justify-center mx-auto mb-4">
+          <svg className="w-8 h-8 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h3 className="text-xl font-bold text-[#1E3A5F] mb-2">Inquiry Sent!</h3>
+        <p className="text-slate-500 text-sm">
+          Thank you! The exporter will contact you within 24 hours.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm sticky top-24">
-      <h3 className="font-heading font-semibold text-gray-900 mb-1">Send Inquiry</h3>
-      <p className="text-xs text-gray-500 mb-4">For: <span className="font-medium text-gray-700">{productName}</span></p>
-
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-3">
-        <div>
-          <label className="form-label">Your Name *</label>
-          <input {...register('buyerName')} className={errors.buyerName ? 'form-input-error' : 'form-input'} placeholder="John Smith" />
-          {errors.buyerName && <p className="form-error">{errors.buyerName.message}</p>}
-        </div>
-
-        <div>
-          <label className="form-label">Company Name</label>
-          <input {...register('buyerCompany')} className="form-input" placeholder="Acme Corp" />
-        </div>
-
-        <div>
-          <label className="form-label">Email Address *</label>
-          <input {...register('buyerEmail')} type="email" className={errors.buyerEmail ? 'form-input-error' : 'form-input'} placeholder="john@example.com" />
-          {errors.buyerEmail && <p className="form-error">{errors.buyerEmail.message}</p>}
-        </div>
-
-        <div className="grid grid-cols-2 gap-2">
+    <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+      {productName && (
+        <div className="bg-blue-50 border border-blue-100 rounded-xl px-4 py-3 flex items-center gap-3">
+          <svg className="w-5 h-5 text-[#1E3A5F] flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
           <div>
-            <label className="form-label">Phone</label>
-            <input {...register('buyerPhone')} className="form-input" placeholder="+1 234 567 890" />
-          </div>
-          <div>
-            <label className="form-label">Country *</label>
-            <input {...register('buyerCountry')} className={errors.buyerCountry ? 'form-input-error' : 'form-input'} placeholder="USA" />
-            {errors.buyerCountry && <p className="form-error">{errors.buyerCountry.message}</p>}
+            <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">Inquiring about</p>
+            <p className="text-sm font-semibold text-[#1E3A5F]">{productName}</p>
           </div>
         </div>
+      )}
 
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <div>
-          <label className="form-label">Quantity Required</label>
-          <input {...register('quantity')} type="number" min="1" className="form-input" placeholder="e.g. 500" />
+          <label className="block text-xs font-bold text-slate-600 mb-1.5">Full Name <span className="text-red-500">*</span></label>
+          <input {...register('buyerName')} placeholder="John Smith" className={inputCls} />
+          {errors.buyerName && <p className={errorCls}>{errors.buyerName.message}</p>}
         </div>
-
         <div>
-          <label className="form-label">Message / Requirements</label>
-          <textarea
-            {...register('message')}
-            rows={3}
-            className="form-input resize-none"
-            placeholder="Describe your requirements, specifications, target price..."
-          />
+          <label className="block text-xs font-bold text-slate-600 mb-1.5">Company Name</label>
+          <input {...register('buyerCompany')} placeholder="Your company" className={inputCls} />
         </div>
+      </div>
 
-        <button type="submit" disabled={isSubmitting} className="btn btn-primary w-full">
-          {isSubmitting ? (
-            <span className="flex items-center gap-2">
-              <svg className="animate-spin h-4 w-4" viewBox="0 0 24 24" fill="none">
-                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
-                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z" />
-              </svg>
-              Sending...
-            </span>
-          ) : (
-            <span className="flex items-center gap-2"><Send size={16} /> Send Inquiry</span>
-          )}
-        </button>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-bold text-slate-600 mb-1.5">Business Email <span className="text-red-500">*</span></label>
+          <input {...register('buyerEmail')} type="email" placeholder="you@company.com" className={inputCls} />
+          {errors.buyerEmail && <p className={errorCls}>{errors.buyerEmail.message}</p>}
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-600 mb-1.5">Phone / WhatsApp</label>
+          <input {...register('buyerPhone')} placeholder="+1 555 000 0000" className={inputCls} />
+        </div>
+      </div>
 
-        <p className="text-xs text-gray-400 text-center">
-          🔒 Your information is kept confidential
-        </p>
-      </form>
-    </div>
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label className="block text-xs font-bold text-slate-600 mb-1.5">Country <span className="text-red-500">*</span></label>
+          <input {...register('buyerCountry')} placeholder="e.g. United States" className={inputCls} />
+          {errors.buyerCountry && <p className={errorCls}>{errors.buyerCountry.message}</p>}
+        </div>
+        <div>
+          <label className="block text-xs font-bold text-slate-600 mb-1.5">Quantity Required</label>
+          <input {...register('quantity')} type="number" min="1" placeholder="e.g. 500 kg" className={inputCls} />
+        </div>
+      </div>
+
+      <div>
+        <label className="block text-xs font-bold text-slate-600 mb-1.5">Message / Specifications</label>
+        <textarea
+          {...register('message')}
+          rows={4}
+          placeholder="Describe your requirements, preferred packaging, certifications needed, delivery timeline..."
+          className={`${inputCls} resize-none`}
+        />
+      </div>
+
+      <button
+        type="submit"
+        disabled={isSubmitting}
+        className="w-full bg-orange-500 hover:bg-orange-600 disabled:opacity-60 text-white font-bold py-3 px-6 rounded-xl transition-colors flex items-center justify-center gap-2"
+      >
+        {isSubmitting ? (
+          <>
+            <svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>
+            Sending...
+          </>
+        ) : (
+          <>
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"/></svg>
+            Send Inquiry
+          </>
+        )}
+      </button>
+
+      <p className="text-center text-xs text-slate-400">
+        By submitting, you agree to our{' '}
+        <a href="/privacy" className="underline hover:text-slate-600">Privacy Policy</a>.
+        Your information is shared only with the exporter.
+      </p>
+    </form>
   );
 }
