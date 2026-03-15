@@ -1,5 +1,5 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -14,12 +14,12 @@ const schema = z.object({
 
 const inputCls = 'w-full px-4 py-3 text-sm border border-slate-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#1E3A5F]/30 focus:border-[#1E3A5F] transition placeholder-slate-400';
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
   const params = useSearchParams();
   const { login, user } = useAuth();
   const [showPass, setShowPass] = useState(false);
-  const [loading, setLoading]   = useState(false);
+  const [loading,  setLoading]  = useState(false);
   const redirect = params.get('redirect') || null;
 
   useEffect(() => {
@@ -60,24 +60,23 @@ export default function LoginPage() {
             </div>
           </Link>
           <h2 className="text-4xl font-black leading-tight mb-4">
-            India's Premier<br />B2B Export<br />Marketplace
+            India&apos;s Premier<br />B2B Export<br />Marketplace
           </h2>
           <p className="text-blue-200 leading-relaxed">
             Connect with 500+ KYC-verified Indian exporters. Source premium products across 50+ categories.
           </p>
-        </div>
-        <div className="space-y-3">
-          {[
-            { emoji: '✅', text: '500+ Verified Exporters' },
-            { emoji: '🌐', text: '80+ Countries Served' },
-            { emoji: '💰', text: 'Multi-Currency Pricing' },
-            { emoji: '🔒', text: 'KYC Verified Vendors' },
-          ].map((item) => (
-            <div key={item.text} className="flex items-center gap-3 text-sm text-blue-100">
-              <span>{item.emoji}</span>
-              <span>{item.text}</span>
-            </div>
-          ))}
+          <div className="mt-8 space-y-3">
+            {[
+              { emoji: '\u2705', text: '500+ Verified Exporters' },
+              { emoji: '\uD83C\uDF10', text: '80+ Countries Served' },
+              { emoji: '\uD83D\uDCB0', text: 'Multi-Currency Pricing' },
+              { emoji: '\uD83D\uDD12', text: 'KYC Verified Vendors' },
+            ].map((item) => (
+              <div key={item.text} className="flex items-center gap-3 text-sm text-blue-100">
+                <span>{item.emoji}</span> {item.text}
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
@@ -85,74 +84,78 @@ export default function LoginPage() {
       <div className="flex-1 flex items-center justify-center p-8">
         <div className="w-full max-w-md">
           {/* Mobile logo */}
-          <Link href="/" className="flex lg:hidden items-center gap-2 justify-center mb-8">
+          <div className="lg:hidden flex items-center gap-2 justify-center mb-8">
             <div className="w-8 h-8 rounded-lg bg-[#1E3A5F] flex items-center justify-center">
-              <span className="text-white font-black text-sm">B</span>
+              <span className="font-black text-sm">B</span>
             </div>
             <span className="font-black text-xl text-[#1E3A5F]">Bharat<span className="text-orange-500">Bridge</span></span>
-          </Link>
+          </div>
 
           <h1 className="text-2xl font-black text-[#1E3A5F] mb-1">Welcome back</h1>
           <p className="text-slate-500 text-sm mb-8">Sign in to your BharatBridge account</p>
 
           {/* Demo login shortcuts */}
-          <div className="flex gap-3 mb-6">
-            <button onClick={() => fillDemo('vendor')} type="button" className="flex-1 flex items-center justify-center gap-2 bg-[#1E3A5F]/5 hover:bg-[#1E3A5F]/10 border border-[#1E3A5F]/20 text-[#1E3A5F] text-xs font-bold py-2.5 rounded-xl transition">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16"/></svg>
+          <div className="flex gap-2 mb-6">
+            <button onClick={() => fillDemo('vendor')} type="button"
+              className="flex-1 flex items-center justify-center gap-2 bg-[#1E3A5F]/5 hover:bg-[#1E3A5F]/10 border border-[#1E3A5F]/20 text-[#1E3A5F] text-xs font-bold py-2.5 rounded-xl transition">
               Demo Vendor
             </button>
-            <button onClick={() => fillDemo('admin')} type="button" className="flex-1 flex items-center justify-center gap-2 bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-700 text-xs font-bold py-2.5 rounded-xl transition">
-              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
+            <button onClick={() => fillDemo('admin')} type="button"
+              className="flex-1 flex items-center justify-center gap-2 bg-orange-50 hover:bg-orange-100 border border-orange-200 text-orange-700 text-xs font-bold py-2.5 rounded-xl transition">
               Demo Admin
             </button>
           </div>
 
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <div>
-              <label className="block text-xs font-bold text-slate-600 mb-1.5">Email Address</label>
+              <label className="block text-xs font-semibold text-slate-600 mb-1.5">Email Address</label>
               <input {...register('email')} type="email" placeholder="you@company.com" className={inputCls} />
-              {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email.message}</p>}
+              {errors.email && <p className="text-xs text-red-500 mt-1">{errors.email.message}</p>}
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-600 mb-1.5">Password</label>
+              <label className="block text-xs font-semibold text-slate-600 mb-1.5">Password</label>
               <div className="relative">
                 <input {...register('password')} type={showPass ? 'text' : 'password'} placeholder="Your password" className={`${inputCls} pr-11`} />
-                <button type="button" onClick={() => setShowPass(!showPass)} className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition">
+                <button type="button" onClick={() => setShowPass(!showPass)}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 hover:text-slate-600 transition">
                   {showPass ? (
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"/></svg>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21" /></svg>
                   ) : (
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/><path strokeLinecap="round" strokeLinejoin="round" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/></svg>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" /><path d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" /></svg>
                   )}
                 </button>
               </div>
-              {errors.password && <p className="text-red-500 text-xs mt-1">{errors.password.message}</p>}
+              {errors.password && <p className="text-xs text-red-500 mt-1">{errors.password.message}</p>}
             </div>
 
-            <button
-              type="submit"
-              disabled={loading}
-              className="w-full bg-[#1E3A5F] hover:bg-[#16304F] disabled:opacity-60 text-white font-bold py-3.5 rounded-xl transition flex items-center justify-center gap-2"
-            >
+            <button type="submit" disabled={loading}
+              className="w-full py-3 bg-[#1E3A5F] hover:bg-[#162d4a] text-white font-bold rounded-xl transition text-sm flex items-center justify-center gap-2 disabled:opacity-60">
               {loading ? (
-                <><svg className="animate-spin w-4 h-4" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z"/></svg>Signing in...</>
+                <><svg className="animate-spin h-4 w-4" fill="none" viewBox="0 0 24 24"><circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"/><path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"/></svg> Signing in...</>
               ) : (
-                <>Sign In <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}><path strokeLinecap="round" strokeLinejoin="round" d="M13 7l5 5m0 0l-5 5m5-5H6"/></svg></>
+                <>Sign In</>
               )}
             </button>
           </form>
 
-          <div className="mt-6 text-center space-y-3">
-            <p className="text-sm text-slate-500">
-              Are you an exporter?{' '}
-              <Link href="/vendor/register" className="text-[#1E3A5F] font-bold hover:text-orange-500 transition">Register as Vendor</Link>
-            </p>
-            <p className="text-sm text-slate-500">
-              <Link href="/" className="text-slate-400 hover:text-slate-600 transition">← Back to Homepage</Link>
-            </p>
-          </div>
+          <p className="text-center text-sm text-slate-500 mt-6">
+            Are you an exporter?{' '}
+            <Link href="/vendor/register" className="text-[#1E3A5F] font-semibold hover:underline">Register as Vendor</Link>
+          </p>
+          <p className="text-center mt-4">
+            <Link href="/" className="text-xs text-slate-400 hover:text-slate-600">← Back to Homepage</Link>
+          </p>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen flex items-center justify-center"><div className="animate-spin h-8 w-8 rounded-full border-4 border-[#1E3A5F] border-t-transparent" /></div>}>
+      <LoginForm />
+    </Suspense>
   );
 }
